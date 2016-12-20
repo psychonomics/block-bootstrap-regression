@@ -13,7 +13,7 @@ data(Grunfeld)
 #_______________________________________________________________________________
 # [Define] shinyServer ----
 shinyServer(function(input, output) {
-
+  
   
   #- - - - - - - - - - - - - - - - - -
   # renderPlot ----
@@ -73,7 +73,7 @@ shinyServer(function(input, output) {
 
     #- - - - - - - - - - - - - - - - - -
     chr.main.title <-
-      paste0("Model fit variation using ", chr.fit)
+      paste0("Variation in the model fit using ", chr.fit)
 
 
     if (chr_chart == "model fit") {
@@ -91,22 +91,27 @@ shinyServer(function(input, output) {
         num.round.by <- 2
         }
        
-      output$num.mean <- 
-        renderText({
-          round(df.glance.summary$mean[num.fit], num.round.by)
-          })
-      
-      output$num.sd <- 
-        renderText({
-          round(df.glance.summary$sd[num.fit], num.round.by)
-          })
-      
-      output$num.coeff.var <- 
-        renderText({
-          round(df.glance.summary$sd[num.fit] / 
+      num.mean <- 
+        round(df.glance.summary$mean[num.fit], num.round.by)
+        
+    
+      num.sd <- 
+        round(df.glance.summary$sd[num.fit], num.round.by)
+        
+      num.coeff.var <- 
+        round(df.glance.summary$sd[num.fit] / 
                   df.glance.summary$mean[num.fit], 2)
-          })
-          
+        
+      # - - - - - - - - - - - - - - - - - - -
+      output$chr.mean <- 
+        renderText({paste("Mean: ", num.mean)})
+      
+      output$chr.sd <- 
+        renderText({paste("Standard Deviation: ", num.sd)})
+      
+      output$chr.coeff.var <- 
+        renderText({paste("Coefficient of Variation: ", num.coeff.var)})
+      
       
       }
 
@@ -124,7 +129,7 @@ shinyServer(function(input, output) {
 
 
     chr.main.title <-
-      paste0("Coefficient variation for ", chr.predictor)
+      paste0("Variation in the coefficient for ", chr.predictor)
 
 
     if (chr_chart == "model coefficients"){
@@ -135,6 +140,7 @@ shinyServer(function(input, output) {
            xlab = chr.predictor
            )
       
+      # - - - - - - - - - - - - - - - - - - -
       # Decide on decimal places, based on variable being plotted
       if (abs(df.tidy.summary$mean[num.predictor]) > 10) {
         num.round.by <- 0
@@ -142,21 +148,28 @@ shinyServer(function(input, output) {
         num.round.by <- 2
         }
 
-      output$num.mean <- 
-        renderText({
-          round(df.tidy.summary$mean[num.predictor], num.round.by)
-          })
-      
-      output$num.sd <- 
-        renderText({
-          round(df.tidy.summary$sd[num.predictor], num.round.by)
-          })
-      
-      output$num.coeff.var <- 
-        renderText({
-          round(df.tidy.summary$sd[num.predictor] / 
+      num.mean <- 
+        round(df.tidy.summary$mean[num.predictor], num.round.by)
+        
+      num.sd <- 
+        round(df.tidy.summary$sd[num.predictor], num.round.by)
+
+      num.coeff.var <- 
+        round(df.tidy.summary$sd[num.predictor] / 
                   df.tidy.summary$mean[num.predictor], 2)
-          })
+        
+      
+      # - - - - - - - - - - - - - - - - - - -
+      output$chr.mean <- 
+        renderText({paste("Mean: ", num.mean)})
+      
+      output$chr.sd <- 
+        renderText({paste("Standard Deviation: ", num.sd)})
+      
+      output$chr.coeff.var <- 
+        renderText({paste("Coefficient of Variation: ", num.coeff.var)})
+      
+      
     
       }
   
